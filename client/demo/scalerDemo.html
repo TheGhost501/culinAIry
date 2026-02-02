@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ingredient Scaler - Demo & Tests</title>
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/recipe.css">
+  <style>
+    body {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+      background: #f5f5f5;
+    }
+    
+    .demo-section {
+      background: white;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .demo-title {
+      color: #2c3e50;
+      border-bottom: 2px solid #4CAF50;
+      padding-bottom: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .test-output {
+      background: #f8f9fa;
+      border-left: 4px solid #2196F3;
+      padding: 1rem;
+      margin: 1rem 0;
+      font-family: monospace;
+      font-size: 0.9rem;
+      white-space: pre-wrap;
+    }
+    
+    .success {
+      color: #4CAF50;
+      font-weight: bold;
+    }
+    
+    .error {
+      color: #f44336;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1 style="text-align: center; color: #2c3e50;">🍳 Ingredient Scaler - Interactive Demo</h1>
+  
+  <!-- Demo 1: Live Interactive Scaler -->
+  <div class="demo-section">
+    <h2 class="demo-title">Demo 1: Interactive Ingredient Scaler</h2>
+    <p>Try adjusting the servings and watch the ingredients scale in real-time!</p>
+    
+    <div id="scaler-demo"></div>
+  </div>
+  
+  <!-- Demo 2: Function Tests -->
+  <div class="demo-section">
+    <h2 class="demo-title">Demo 2: Function Tests</h2>
+    <button id="run-tests" style="padding: 0.75rem 1.5rem; background: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 1rem;">
+      Run All Tests
+    </button>
+    <div id="test-results"></div>
+  </div>
+  
+  <!-- Demo 3: Edge Cases -->
+  <div class="demo-section">
+    <h2 class="demo-title">Demo 3: Edge Case Handling</h2>
+    <div id="edge-cases"></div>
+  </div>
+
+  <script type="module">
+    import { ingredientScalerComponent, attachScalerListeners } from '../js/components/ingredientScaler.js';
+    import {
+      scaleQuantity,
+      formatQuantity,
+      adjustUnits,
+      scaleIngredient,
+      scaleIngredients,
+      getServingSuggestions
+    } from '../js/utils/ingredientScaler.js';
+
+    // Sample recipe for demo
+    const demoRecipe = {
+      id: 'demo-1',
+      title: 'Classic Chocolate Chip Cookies',
+      servings: 24,
+      ingredients: [
+        { name: 'all-purpose flour', quantity: 2.25, unit: 'cup' },
+        { name: 'baking soda', quantity: 1, unit: 'tsp' },
+        { name: 'salt', quantity: 1, unit: 'tsp' },
+        { name: 'butter (softened)', quantity: 16, unit: 'tbsp' },
+        { name: 'white sugar', quantity: 0.75, unit: 'cup' },
+        { name: 'brown sugar', quantity: 0.75, unit: 'cup' },
+        { name: 'vanilla extract', quantity: 2, unit: 'tsp' },
+        { name: 'eggs', quantity: 2, unit: '' },
+        { name: 'chocolate chips', quantity: 2, unit: 'cup' }
+      ]
+    };
+
+    // Demo 1: Render interactive scaler
+    const scalerDemo = document.getElementById('scaler-demo');
+    scalerDemo.innerHTML = ingredientScalerComponent(demoRecipe);
+    
+    // Attach listeners with callback
+    attachScalerListeners(demoRecipe, (newServings) => {
+      console.log(`✓ Servings changed to: ${newServings}`);
+      const scalingFactor = (newServings / demoRecipe.servings).toFixed(2);
+      console.log(`  Scaling factor: ${scalingFactor}x`);
+    });
+
+    // Demo 2: Run function tests
+    document.getElementById('run-tests').addEventListener('click', () => {
+      const resultsDiv = document.getElementById('test-results');
+      let output = '';
+      let passed = 0;
+      let failed = 0;
+
+      function test(name, fn) {
+        try {
+          const result = fn();
+          if (result) {
+            output += `✓ ${name}\n`;
+            passed++;
+          } else {
+            output += `✗ ${name} - Assertion failed\n`;
+            failed++;
+          }
+        } catch (error) {
+          output += `✗ ${name} - Error: ${error.message}\n`;
+          failed++;
+        }
+      }
+
+      // Run tests
+      test('scaleQuantity: 2 cups * 2x = 4 cups', () => scaleQuantity(2, 4, 8) === 4);
+      test('scaleQuantity: 1 cup * 0.5x = 0.5 cups', () => scaleQuantity(1, 4, 2) === 0.5);
+      test('formatQuantity: 0.5 displays as "1/2"', () => formatQuantity(0.5) === '1/2');
+      test('formatQuantity: 0.75 displays as "3/4"', () => formatQuantity(0.75) === '3/4');
+      test('formatQuantity: 0.05 displays as "pinch"', () => formatQuantity(0.05) === 'pinch');
+      test('formatQuantity: 2.5 displays as "2.5"', () => formatQuantity(2.5) === '2.5');
+      test('adjustUnits: 4 tsp converts to tbsp', () => {
+        const result = adjustUnits(4, 'tsp');
+        return result.unit === 'tbsp' && result.quantity > 1;
+      });
+      test('adjustUnits: 20 tbsp converts to cups', () => {
+        const result = adjustUnits(20, 'tbsp');
+        return result.unit === 'cup';
+      });
+      test('scaleIngredient preserves ingredient name', () => {
+        const ing = { name: 'flour', quantity: 2, unit: 'cup' };
+        const scaled = scaleIngredient(ing, 4, 8);
+        return scaled.name === 'flour';
+      });
+      test('scaleIngredients handles arrays correctly', () => {
+        const ings = [
+          { name: 'flour', quantity: 2, unit: 'cup' },
+          { name: 'sugar', quantity: 1, unit: 'cup' }
+        ];
+        const scaled = scaleIngredients(ings, 4, 8);
+        return scaled.length === 2 && scaled[0].quantity === 4;
+      });
+      test('getServingSuggestions includes original', () => {
+        const suggestions = getServingSuggestions(4);
+        return suggestions.includes(4);
+      });
+      test('Error handling: negative servings throws error', () => {
+        try {
+          scaleQuantity(2, -1, 4);
+          return false;
+        } catch (e) {
+          return true;
+        }
+      });
+      test('Error handling: zero servings throws error', () => {
+        try {
+          scaleQuantity(2, 0, 4);
+          return false;
+        } catch (e) {
+          return true;
+        }
+      });
+      test('Error handling: negative quantity throws error', () => {
+        try {
+          scaleQuantity(-2, 4, 8);
+          return false;
+        } catch (e) {
+          return true;
+        }
+      });
+
+      // Display results
+      output += `\n${'='.repeat(40)}\n`;
+      output += `Total: ${passed + failed} | Passed: ${passed} | Failed: ${failed}\n`;
+      
+      resultsDiv.innerHTML = `
+        <div class="test-output">
+          ${output}
+          <div class="${failed === 0 ? 'success' : 'error'}">
+            ${failed === 0 ? '✓ All tests passed!' : `⚠ ${failed} test(s) failed`}
+          </div>
+        </div>
+      `;
+    });
+
+    // Demo 3: Edge cases
+    const edgeCasesDiv = document.getElementById('edge-cases');
+    let edgeCaseOutput = '';
+
+    edgeCaseOutput += '<h3>Fraction Formatting:</h3>\n';
+    [0.125, 0.25, 0.333, 0.5, 0.667, 0.75, 1.5, 2.75].forEach(qty => {
+      edgeCaseOutput += `${qty} → "${formatQuantity(qty)}"\n`;
+    });
+
+    edgeCaseOutput += '\n<h3>Unit Conversions:</h3>\n';
+    const conversions = [
+      { qty: 4, unit: 'tsp' },
+      { qty: 20, unit: 'tbsp' },
+      { qty: 5, unit: 'cup' },
+      { qty: 24, unit: 'oz' },
+      { qty: 1500, unit: 'ml' }
+    ];
+    conversions.forEach(({ qty, unit }) => {
+      const result = adjustUnits(qty, unit);
+      edgeCaseOutput += `${qty} ${unit} → ${result.quantity.toFixed(2)} ${result.unit}\n`;
+    });
+
+    edgeCaseOutput += '\n<h3>Extreme Scaling:</h3>\n';
+    const flour = { name: 'flour', quantity: 2, unit: 'cup' };
+    const scaled1 = scaleIngredient(flour, 4, 1);
+    const scaled100 = scaleIngredient(flour, 4, 100);
+    edgeCaseOutput += `4→1 servings: ${scaled1.formattedQuantity} ${scaled1.unit}\n`;
+    edgeCaseOutput += `4→100 servings: ${scaled100.formattedQuantity} ${scaled100.unit}\n`;
+
+    edgeCasesDiv.innerHTML = `<div class="test-output">${edgeCaseOutput}</div>`;
+
+    console.log('🎉 Demo page loaded successfully!');
+  </script>
+</body>
+</html>

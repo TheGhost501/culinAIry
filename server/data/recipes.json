@@ -1,0 +1,56 @@
+{
+  "recipes": [
+    {
+      "id": "9a2f6d7b-1e52-4c0a-9e5e-8a7c6f0a1c21",
+      "title": "Dumb Sandwich",
+      "description": "A cheeky, over-the-top sandwich with crispy bread, melted cheese, and a punchy sauce.",
+      "servings": 1,
+      "ingredients": [
+        { "name": "sourdough bread", "quantity": 2, "unit": "slices" },
+        { "name": "cheddar cheese", "quantity": 2, "unit": "slices" },
+        { "name": "butter", "quantity": 1, "unit": "tbsp" },
+        { "name": "hot sauce", "quantity": 1, "unit": "tsp" },
+        { "name": "mayonnaise", "quantity": 1, "unit": "tbsp" }
+      ],
+      "instructions": [
+        "Butter one side of each bread slice.",
+        "Spread mayonnaise and hot sauce on the unbuttered sides.",
+        "Add cheese between the slices, buttered sides out.",
+        "Toast in a pan over medium heat until golden and melted."
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1528735602780-2552fd46c7af",
+      "cookTime": 8,
+      "prepTime": 5,
+      "ownerId": "5f3b4d3f-2b7d-4a3e-9a0d-6dfc6f4e2a11",
+      "createdAt": "2026-02-02T00:00:00.000Z",
+      "updatedAt": "2026-02-02T00:00:00.000Z"
+    },
+    {
+      "id": "2d8b9c1e-5f7a-4c2e-9a1b-3e6f7d8c4b22",
+      "title": "British Carbonara",
+      "description": "A British-leaning twist on carbonara with smoky bacon, peas, and a creamy egg sauce.",
+      "servings": 2,
+      "ingredients": [
+        { "name": "spaghetti", "quantity": 200, "unit": "g" },
+        { "name": "smoked bacon", "quantity": 150, "unit": "g" },
+        { "name": "eggs", "quantity": 2, "unit": "whole" },
+        { "name": "parmesan", "quantity": 40, "unit": "g" },
+        { "name": "peas", "quantity": 80, "unit": "g" },
+        { "name": "black pepper", "quantity": 1, "unit": "tsp" }
+      ],
+      "instructions": [
+        "Cook spaghetti until al dente, reserving a splash of pasta water.",
+        "Fry bacon until crisp, then add peas to warm through.",
+        "Whisk eggs and parmesan with black pepper.",
+        "Toss pasta with bacon, remove from heat, then stir in egg mixture and a splash of pasta water.",
+        "Serve immediately with extra parmesan and pepper."
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1521389508051-d7ffb5dc8e8f",
+      "cookTime": 15,
+      "prepTime": 10,
+      "ownerId": "5f3b4d3f-2b7d-4a3e-9a0d-6dfc6f4e2a11",
+      "createdAt": "2026-02-02T00:00:00.000Z",
+      "updatedAt": "2026-02-02T00:00:00.000Z"
+    }
+  ]
+}

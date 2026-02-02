@@ -1,0 +1,12 @@
+{
+  "users": [
+    {
+      "id": "5f3b4d3f-2b7d-4a3e-9a0d-6dfc6f4e2a11",
+      "email": "gordon@ramsay.com",
+      "username": "Gordon Ramsay",
+      "password": "gordon#1",
+      "createdAt": "2026-02-02T00:00:00.000Z"
+    }
+  ],
+  "sessions": []
+}
