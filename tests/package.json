@@ -1,0 +1,35 @@
+{
+  "name": "culinairy-automated-tests",
+  "version": "1.0.0",
+  "description": "Automated test suite for CulinAIry application",
+  "scripts": {
+    "test": "jest --coverage",
+    "test:watch": "jest --watch",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:headed": "playwright test --headed",
+    "test:security": "echo 'Security tests - manual execution required (see tests/manual/SECURITY_TEST_CASES.md)'"
+  },
+  "keywords": ["testing", "jest", "playwright", "e2e", "qa"],
+  "author": "QA Team",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^6.3.4",
+    "@playwright/test": "^1.41.0",
+    "node-fetch": "^2.7.0"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coverageDirectory": "./coverage",
+    "collectCoverageFrom": [
+      "../server/**/*.js",
+      "!../server/node_modules/**",
+      "!../server/data/**"
+    ],
+    "testMatch": [
+      "**/automated/backend/**/*.test.js"
+    ],
+    "testTimeout": 10000
+  }
+}
