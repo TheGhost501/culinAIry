@@ -1,8 +1,8 @@
-# CulinAIry - Software Architecture Design (Phase 1)
+# CulinAIry - Software Architecture Design
 
-> **Project Status:** Planning Phase  
-> **Architecture Version:** 1.0  
-> **Last Updated:** February 2, 2026
+> **Project Status:** ✅ Implemented and Consolidated  
+> **Architecture Version:** 2.0  
+> **Last Updated:** February 22, 2026
 
 ---
 
@@ -21,7 +21,7 @@
 
 ## Project Overview
 
-**CulinAIry** is a beginner-friendly, full-stack Single Page Application (SPA) for managing personal recipe collections. The application demonstrates modern web development practices using vanilla JavaScript on the frontend and Node.js/Express on the backend, with JWT-based authentication and JSON file storage.
+**CulinAIry** is a beginner-friendly, full-stack Single Page Application (SPA) for managing personal recipe collections. The application demonstrates modern web development practices using vanilla JavaScript on the frontend and Node.js/Express on the backend, with custom token-based authentication and JSON file storage.
 
 ### Core Features
 - User registration and authentication
@@ -31,11 +31,11 @@
 - Responsive UI with client-side routing
 
 ### Technology Stack
-- **Frontend:** HTML5, CSS3, Vanilla JavaScript, lit-html
+- **Frontend:** HTML5, CSS3, Vanilla JavaScript ES6+ (template literals)
 - **Backend:** Node.js, Express.js
 - **Storage:** JSON files (file-based database)
-- **Authentication:** JWT (JSON Web Tokens) with bcrypt password hashing
-- **Routing:** Hash-based client-side routing
+- **Authentication:** Custom token-based auth with X-Authorization header
+- **Routing:** Hash-based client-side routing (#/path)
 
 ---
 
@@ -48,45 +48,50 @@ culinAIry/
 │   │   ├── users.json               # User accounts with hashed passwords
 │   │   └── recipes.json             # Recipe database with author references
 │   ├── middleware/                  # Express middleware modules
-│   │   └── auth.js                  # JWT token validation middleware
+│   │   └── auth.js                  # Token validation middleware
 │   ├── routes/                      # API route handlers
-│   │   ├── auth.js                  # Authentication endpoints (register/login)
+│   │   ├── auth.js                  # Authentication endpoints (register/login/logout)
 │   │   └── recipes.js               # Recipe CRUD endpoints
 │   ├── utils/                       # Utility modules for reusable logic
 │   │   ├── fileHandler.js           # JSON file read/write operations
-│   │   └── tokenGenerator.js        # JWT token generation and validation
+│   │   └── tokenGenerator.js        # Token generation utilities
 │   ├── server.js                    # Express server entry point
-│   ├── package.json                 # Server dependencies and scripts
-│   └── .env.example                 # Environment variables template
+│   └── package.json                 # Server dependencies and scripts
 │
 ├── client/                          # Frontend SPA application
-│   ├── css/                         # Stylesheets organized by feature
-│   │   ├── main.css                 # Global styles, layout, typography
-│   │   ├── auth.css                 # Login/register form styles
-│   │   └── recipe.css               # Recipe card and detail styles
-│   ├── js/                          # JavaScript modules
-│   │   ├── app.js                   # Application entry point and initialization
-│   │   ├── router.js                # Client-side hash-based router
-│   │   ├── api.js                   # HTTP client with automatic token injection
-│   │   ├── auth.js                  # Authentication state management
-│   │   ├── views/                   # Page view modules (returns HTML)
-│   │   │   ├── home.js              # Landing page with app introduction
-│   │   │   ├── login.js             # Login form view
-│   │   │   ├── register.js          # Registration form view
-│   │   │   ├── recipes.js           # Recipe list/browse view
-│   │   │   ├── recipeDetails.js     # Individual recipe detail view
-│   │   │   ├── createRecipe.js      # Recipe creation form
-│   │   │   └── editRecipe.js        # Recipe editing form
-│   │   └── components/              # Reusable UI components
-│   │       ├── navbar.js            # Navigation bar with auth state
-│   │       ├── recipeCard.js        # Recipe summary card component
-│   │       └── ingredientScaler.js  # Interactive ingredient calculator
-│   ├── index.html                   # SPA shell (single HTML file)
-│   └── favicon.ico                  # Application icon
+│   ├── css/                         # Stylesheets (dark theme with culinary motifs)
+│   │   ├── main.css                 # Global styles, layout, components, dark theme
+│   │   └── recipe.css               # Ingredient scaler and recipe-specific styles
+│   ├── js/                          # JavaScript modules (ES6+)
+│   │   ├── app.js                   # SPA entry point (initializes router & navbar)
+│   │   ├── router.js                # Hash-based router with protected routes
+│   │   ├── api.js                   # HTTP client with X-Authorization header injection
+│   │   ├── auth.js                  # Auth state (localStorage token management)
+│   │   ├── views/                   # Page view modules (return HTML strings)
+│   │   │   ├── homeView.js          # Landing page
+│   │   │   ├── loginView.js         # Login form view
+│   │   │   ├── registerView.js      # Registration form view
+│   │   │   ├── recipesView.js       # All recipes list (public)
+│   │   │   ├── recipeDetailsView.js # Single recipe detail with scaler
+│   │   │   ├── createRecipeView.js  # Recipe creation form (protected)
+│   │   │   ├── editRecipeView.js    # Recipe editing form (protected)
+│   │   │   ├── myRecipesView.js     # User's personal recipes (protected)
+│   │   │   └── notFoundView.js      # 404 fallback view
+│   │   ├── components/              # Reusable UI components
+│   │   │   ├── navbar.js            # Navigation bar with auth state
+│   │   │   └── ingredientScaler.js  # Interactive ingredient calculator widget
+│   │   └── utils/                   # Frontend utilities
+│   │       └── ingredientScaler.js  # Ingredient scaling math & formatting
+│   ├── legacy-frontend/             # Archived duplicate frontend trees (for review)
+│   ├── index.html                   # SPA shell with culinary SVG motifs
+│   └── package.json                 # Frontend tooling (http-server)
 │
-├── .gitignore                       # Git ignore rules (node_modules, .env)
-└── README.md                        # Project documentation
-
+├── .github/                         # GitHub configuration
+│   └── copilot-instructions.md      # AI assistant guidance for the project
+├── .gitignore                       # Git ignore rules
+├── ARCHITECTURE.md                  # This file (software architecture doc)
+├── projectStructure.md              # Detailed file tree documentation
+└── README.md                        # Project overview and setup guide
 ```
 
 ### Module Responsibilities
@@ -102,76 +107,74 @@ culinAIry/
 - Server startup
 
 **`server/middleware/auth.js`**
-- Extract JWT token from `X-Authorization` header
-- Validate token signature and expiration
+- Extract token from `X-Authorization` header
+- Validate token against stored user tokens
 - Attach user data to `req.user`
 - Return 401 for invalid/missing tokens
 
 **`server/routes/auth.js`**
-- User registration with password hashing
+- User registration endpoint
 - User login with credential verification
+- User logout endpoint
 - Token generation and response
 
 **`server/routes/recipes.js`**
 - Recipe creation (auth required)
-- Recipe retrieval (all recipes or by ID)
-- Recipe update (owner verification)
-- Recipe deletion (owner verification)
+- Recipe retrieval (all recipes, by ID, or user's recipes)
+- Recipe update (owner verification required)
+- Recipe deletion (owner verification required)
 
 **`server/utils/fileHandler.js`**
 - Read JSON files asynchronously
 - Write JSON files with error handling
-- Data validation helpers
 - File system operations
 
 **`server/utils/tokenGenerator.js`**
-- Generate JWT tokens with user payload
-- Verify token validity
-- Extract user data from tokens
-- Set expiration policies
+- Generate unique tokens (UUID-based)
+- Token management utilities
 
 #### Frontend Modules
 
 **`client/js/app.js`**
-- Initialize router
-- Set up global event listeners
-- Load authentication state
-- Render initial view
-- Handle navigation events
+- SPA entry point (auto-initializes router)
+- Initialize navbar on page load
+- Listen for authChange events to update UI
+- Minimal bootstrap logic
 
 **`client/js/router.js`**
-- Map URL hashes to view functions
-- Handle route changes (hashchange event)
-- Navigate programmatically
-- Render views in DOM container
-- Manage route guards (auth-required routes)
+- Map URL hashes to view functions (#/path → viewFn)
+- Handle hashchange and load events
+- Render views in #app-container
+- Protected route guards (redirect to /login if not authenticated)
+- Extract route parameters (`:id` patterns)
 
 **`client/js/api.js`**
-- Make HTTP requests to backend
-- Auto-inject `X-Authorization` header
-- Handle response errors
-- Parse JSON responses
-- Centralized error handling
+- Centralized HTTP client (fetch wrapper)
+- Auto-inject `X-Authorization` header from localStorage
+- Organized by resource (api.auth.*, api.recipes.*)
+- Return `{ data, error }` for consistent handling
+- Base URL: http://localhost:3000/api/
 
 **`client/js/auth.js`**
-- Store/retrieve JWT from localStorage
-- Get current user data
-- Login/logout functions
-- Check authentication status
-- Clear auth state
+- Store/retrieve token from localStorage
+- getUserId() for ownership checks
+- isAuthenticated() for route guards
+- saveToken(), clearToken() with authChange events
+- No external dependencies (localStorage only)
 
 **Views** (`client/js/views/*.js`)
-- Export default function that returns HTML string
-- Use lit-html for templating
-- Attach event listeners after render
-- Fetch data via api.js
-- Handle form submissions
+- Export async view functions that return HTML strings
+- Use ES6 template literals (no lit-html)
+- Fetch data directly via api.js (no store)
+- Handle form submissions with window event delegation
+- Examples: homeView, loginView, registerView, recipesView, recipeDetailsView, createRecipeView, editRecipeView, myRecipesView, notFoundView
 
 **Components** (`client/js/components/*.js`)
-- Export reusable render functions
-- Accept data as parameters
-- Return HTML using lit-html
-- Stateless presentation logic
+- navbar.js: Renders navigation, updates on authChange, handles logout
+- ingredientScaler.js: Interactive serving size adjuster with +/− buttons and visual feedback
+
+**Utils** (`client/js/utils/*.js`)
+- ingredientScaler.js: Math utilities for scaling ingredients (scaleQuantity, formatQuantity, adjustUnits, getServingSuggestions)
 
 ---
 
@@ -179,7 +182,7 @@ culinAIry/
 
 ### Base URL
 ```
-http://localhost:5000/api
+http://localhost:3000/api
 ```
 
 ### Authentication Endpoints
@@ -199,21 +202,20 @@ Create a new user account.
 **Request Body:**
 ```json
 {
-  "username": "string (required, 3-20 chars, alphanumeric)",
+  "username": "string (required)",
   "email": "string (required, valid email format)",
-  "password": "string (required, min 6 chars)"
+  "password": "string (required)"
 }
 ```
 
 **Success Response (201 Created):**
 ```json
 {
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-  "user": {
-    "id": "550e8400-e29b-41d4-a716-446655440000",
+  "data": {
+    "token": "unique-token-string",
+    "userId": "user-uuid",
     "username": "johndoe",
-    "email": "john@example.com",
-    "createdAt": "2026-02-02T10:30:00.000Z"
+    "email": "john@example.com"
   }
 }
 ```
@@ -225,16 +227,10 @@ Create a new user account.
     "error": "Email already exists"
   }
   ```
-- **400 Bad Request:** Missing fields
-  ```json
-  {
-    "error": "All fields are required"
-  }
-  ```
 
 **Example:**
 ```bash
-curl -X POST http://localhost:5000/api/auth/register \
+curl -X POST http://localhost:3000/api/auth/register \
   -H "Content-Type: application/json" \
   -d '{
     "username": "johndoe",
@@ -1282,24 +1278,22 @@ cd culinAIry
 ```bash
 cd server
 npm init -y
-npm install express jsonwebtoken bcrypt cors dotenv uuid
+npm install express cors uuid
 npm install --save-dev nodemon
 ```
 
 **Dependencies Explained:**
-- `express` - Web framework
-- `jsonwebtoken` - JWT token generation/validation
-- `bcrypt` - Password hashing (10 salt rounds)
+- `express` - Web framework for REST API
 - `cors` - Cross-origin resource sharing
-- `dotenv` - Environment variable management
-- `uuid` - Generate unique IDs for users/recipes
+- `uuid` - Generate unique IDs for users/recipes/tokens
 - `nodemon` (dev) - Auto-restart server on file changes
 
+**Note:** This implementation uses a simplified token approach (UUID-based) suitable for learning. For production, consider adding `jsonwebtoken` and `bcrypt` for JWT-based authentication.
+
 #### 3. Environment Variables
-Create `server/.env`:
+Create `server/.env` (optional):
 ```env
-PORT=5000
-JWT_SECRET=your_super_secret_key_change_in_production_min_32_chars
+PORT=3000
 NODE_ENV=development
 ```
 
@@ -1327,31 +1321,35 @@ Edit `server/package.json`:
 ```bash
 cd ../client
 npm init -y
-npm install lit-html
+npm install --save-dev http-server
 ```
 
-**Note:** `lit-html` can also be loaded via CDN in production:
-```html
-<script type="module">
-  import {html, render} from 'https://unpkg.com/lit-html?module';
-</script>
-```
+**Client Dependencies:**
+- `http-server` (dev) - Simple static file server for development
+
+**Note:** No frontend build step needed. The client uses vanilla ES6+ with native modules and template literals.
 
 ### Development Workflow
 
-#### Start Development Server
+#### Start Backend Server
 ```bash
 cd server
 npm run dev
 ```
 
-Server runs on `http://localhost:5000`
+Backend API runs on `http://localhost:3000`
 
-#### Access Application
-Open browser to `http://localhost:5000` (server serves static client files)
+#### Start Frontend Server
+```bash
+cd ../client
+npx http-server -p 5500
+```
+
+Frontend SPA runs on `http://localhost:5500`
 
 #### File Watching
 - Backend: `nodemon` auto-restarts on `.js` file changes
+- Frontend: Refresh browser to see changes (consider adding live-reload extension)
 - Frontend: Refresh browser manually (or use Live Server extension)
 
 ### Project Structure Validation Checklist
@@ -1496,64 +1494,94 @@ Open browser to `http://localhost:5000` (server serves static client files)
 
 ---
 
-### Why bcrypt for Password Hashing?
+### Authentication Implementation
 
-**Advantages:**
-- ✅ **Industry standard** - Battle-tested algorithm
-- ✅ **Adaptive** - Can increase work factor over time
-- ✅ **Salt included** - Each hash is unique
-- ✅ **Slow by design** - Resistant to brute-force
+**Current Approach:**
+- ✅ **Token-based** - Simple UUID-based tokens stored with user records
+- ✅ **X-Authorization header** - Custom header for API requests
+- ✅ **localStorage** - Client-side token persistence
+- ✅ **Protected routes** - Client and server-side verification
 
-**Configuration:**
-- Salt rounds: 10 (good balance of security and performance)
-- Hash length: 60 characters
-
-**Security note:** Never store plain-text passwords, even in development.
+**Note:** This is a simplified implementation suitable for learning. For production applications, consider:
+- JWT (JSON Web Tokens) with bcrypt password hashing
+- OAuth 2.0 / OpenID Connect for social login
+- Refresh tokens for improved security
+- HTTPS for encrypted communication
 
 ---
 
-## Next Steps
+## Implementation Status
 
-### Phase 2: Implementation
-1. Create folder structure
-2. Set up server with Express
-3. Implement authentication routes
-4. Implement recipe routes
-5. Build frontend router
-6. Create view modules
-7. Build reusable components
-8. Style with CSS
+### ✅ Completed (Phase 2 & 3)
+- ✅ Folder structure created and consolidated
+- ✅ Express server with CORS and middleware
+- ✅ Authentication routes (register/login/logout)
+- ✅ Recipe CRUD routes with owner verification
+- ✅ Frontend hash-based router with protected routes
+- ✅ All view modules (9 views total)
+- ✅ Reusable components (navbar, ingredientScaler)
+- ✅ Dark theme CSS with culinary motifs
+- ✅ API-only architecture (no central store)
+- ✅ localStorage-based auth state
+- ✅ Ingredient scaling calculator with interactive UI
+- ✅ Frontend consolidation (duplicate trees archived in `legacy-frontend/`)
 
-### Phase 3: Enhancement
-1. Add input validation
-2. Implement error boundaries
-3. Add loading states
-4. Create recipe search/filter
-5. Add image upload capability
-6. Implement unit tests
-7. Add API documentation (Swagger)
-8. Deploy to hosting platform
+### 🎯 Current Architecture Highlights
+- **Single Source of Truth:** One canonical frontend at `client/js/` (API-driven, no state management library)
+- **Clean Separation:** Backend (`server/`) and frontend (`client/`) are completely decoupled via REST API
+- **Protected Routes:** Client-side guards redirect unauthenticated users to login
+- **Culinary Theme:** SVG motifs (chef hat, utensils) with purple/cyan dark theme
+- **Ingredient Scaler:** Interactive widget with +/− buttons, serving suggestions, and proportional scaling
 
-### Phase 4: Advanced Features
-1. Migrate to database (PostgreSQL/MongoDB)
-2. Implement refresh tokens
-3. Add password reset via email
-4. Create recipe sharing/social features
-5. Add ratings and reviews
-6. Calculate nutritional information
-7. Implement pagination
-8. Add real-time updates (WebSockets)
+### 📦 Legacy Archive
+- **Location:** `client/legacy-frontend/`
+- **Contents:** Duplicate frontend implementations from incremental development (state-based router, Vuex-like store, duplicate views)
+- **Purpose:** Preserved for review; not part of the active codebase
+
+---
+
+## Potential Enhancements
+
+### Next Phase Ideas
+1. **Backend Improvements**
+   - Migrate from JSON files to PostgreSQL/MongoDB
+   - Add input validation middleware (express-validator)
+   - Implement refresh tokens for better security
+   - Add recipe search/filter endpoints
+
+2. **Frontend Features**
+   - Recipe search/filter UI
+   - Image upload capability
+   - Loading states and skeleton screens
+   - Error boundaries for better UX
+   - PWA support (service worker, offline mode)
+
+3. **Advanced Features**
+   - Recipe sharing/social features
+   - Ratings and reviews system
+   - Nutritional information calculator
+   - Pagination for large recipe lists
+   - Real-time updates (WebSockets for collaborative editing)
+   - Password reset via email
+
+4. **DevOps & Testing**
+   - Unit tests (Jest/Vitest)
+   - Integration tests (Supertest for API)
+   - E2E tests (Playwright/Cypress)
+   - CI/CD pipeline (GitHub Actions)
+   - Deploy to Vercel/Netlify (frontend) + Railway/Render (backend)
 
 ---
 
 ## Summary
 
-This architecture provides a solid foundation for building CulinAIry as a beginner-friendly, full-stack recipe management application. The design emphasizes:
+CulinAIry is now a fully functional, full-stack recipe management SPA with a clean, consolidated architecture. The design emphasizes:
 
-- **Separation of concerns** - Clear module boundaries
-- **Scalability** - Easy to swap JSON for database
-- **Security** - JWT auth with bcrypt password hashing
-- **Maintainability** - Modular code with single responsibilities
-- **Beginner-friendly** - Well-documented, standard patterns
+- **Separation of concerns** - Clear module boundaries between frontend and backend
+- **Scalability** - Easy to swap JSON files for a real database
+- **Security** - Token-based auth with protected routes
+- **Maintainability** - API-only frontend, no complex state management
+- **User Experience** - Dark theme, culinary motifs, interactive ingredient scaler
+- **Code Quality** - Consolidated structure with archived legacy code for review
 
 The architecture supports incremental development and future enhancements without requiring major refactoring.
