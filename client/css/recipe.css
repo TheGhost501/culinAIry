@@ -20,7 +20,7 @@
   margin: 0;
   font-size: 1.25rem;
   font-weight: 600;
-  color: #2c3e50;
+  color: var(--text);
 }
 
 /* Servings Controls */
@@ -33,7 +33,7 @@
 
 .servings-controls label {
   font-weight: 500;
-  color: #555;
+  color: var(--muted);
   font-size: 0.95rem;
 }
 
@@ -41,27 +41,27 @@
   display: flex;
   align-items: center;
   gap: 0.25rem;
-  background: #f8f9fa;
-  border: 1px solid #ddd;
-  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border);
+  border-radius: 12px;
   padding: 2px;
 }
 
 .servings-input {
   width: 60px;
   padding: 0.4rem 0.5rem;
-  border: none;
-  background: white;
+  border: 1px solid var(--border);
+  background: rgba(15, 23, 48, 0.7);
   text-align: center;
   font-size: 1rem;
   font-weight: 600;
-  color: #2c3e50;
-  border-radius: 4px;
+  color: var(--text);
+  border-radius: 10px;
 }
 
 .servings-input:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+  outline: 2px solid var(--brand-2);
+  outline-offset: 2px;
 }
 
 /* Remove spinner arrows in Chrome, Safari, Edge */
@@ -82,10 +82,10 @@
   justify-content: center;
   width: 32px;
   height: 32px;
-  border: none;
-  background: #4CAF50;
-  color: white;
-  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+  border-radius: 10px;
   cursor: pointer;
   font-size: 1.2rem;
   font-weight: bold;
@@ -94,7 +94,7 @@
 }
 
 .servings-btn:hover:not(:disabled) {
-  background: #45a049;
+  background: rgba(255, 255, 255, 0.1);
   transform: scale(1.05);
 }
 
@@ -103,7 +103,7 @@
 }
 
 .servings-btn:disabled {
-  background: #ccc;
+  background: rgba(255, 255, 255, 0.04);
   cursor: not-allowed;
   opacity: 0.6;
 }
@@ -114,10 +114,10 @@
 
 .reset-servings-btn {
   padding: 0.4rem 0.75rem;
-  background: #f44336;
-  color: white;
-  border: none;
-  border-radius: 4px;
+  background: rgba(255, 77, 109, 0.16);
+  color: var(--text);
+  border: 1px solid rgba(255, 77, 109, 0.35);
+  border-radius: 10px;
   font-size: 0.85rem;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -125,7 +125,7 @@
 }
 
 .reset-servings-btn:hover {
-  background: #d32f2f;
+  background: rgba(255, 77, 109, 0.25);
 }
 
 /* Servings Suggestions */
@@ -139,16 +139,16 @@
 
 .suggestions-label {
   font-size: 0.9rem;
-  color: #666;
+  color: var(--muted);
   font-weight: 500;
 }
 
 .serving-suggestion-btn {
   padding: 0.35rem 0.75rem;
-  background: white;
-  color: #4CAF50;
-  border: 1px solid #4CAF50;
-  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 10px;
   font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -157,16 +157,17 @@
 }
 
 .serving-suggestion-btn:hover {
-  background: #f1f8f1;
+  background: rgba(255, 255, 255, 0.1);
   transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow);
 }
 
 .serving-suggestion-btn.active {
-  background: #4CAF50;
-  color: white;
+  background: rgba(124, 92, 255, 0.18);
+  border-color: rgba(124, 92, 255, 0.35);
+  color: var(--text);
   font-weight: 600;
-  box-shadow: 0 2px 6px rgba(76, 175, 80, 0.3);
+  box-shadow: var(--shadow);
 }
 
 /* Ingredients List */
@@ -181,43 +182,44 @@
   align-items: baseline;
   padding: 0.75rem 1rem;
   margin-bottom: 0.5rem;
-  background: #f8f9fa;
-  border-radius: 6px;
-  border-left: 3px solid #4CAF50;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  border-left: 3px solid rgba(124, 92, 255, 0.6);
   transition: all 0.3s ease;
 }
 
 .ingredient-item.scaled {
-  background: #e8f5e9;
-  border-left-color: #2196F3;
+  background: rgba(56, 189, 248, 0.08);
+  border-left-color: rgba(56, 189, 248, 0.8);
   animation: scaleHighlight 0.4s ease;
 }
 
 @keyframes scaleHighlight {
   0%, 100% {
-    background: #e8f5e9;
+    background: rgba(56, 189, 248, 0.08);
   }
   50% {
-    background: #c8e6c9;
+    background: rgba(56, 189, 248, 0.16);
   }
 }
 
 .ingredient-quantity {
   font-weight: 700;
-  color: #2c3e50;
+  color: var(--text);
   min-width: 80px;
   font-size: 0.95rem;
 }
 
 .ingredient-name {
   flex: 1;
-  color: #34495e;
+  color: var(--text);
   font-size: 0.95rem;
 }
 
 .original-quantity {
   font-size: 0.8rem;
-  color: #7f8c8d;
+  color: var(--muted);
   font-style: italic;
   margin-left: auto;
   padding-left: 1rem;
@@ -251,86 +253,12 @@
   }
 }
 
-/* Recipe Hero Section */
-.recipe-hero {
-  display: flex;
-  gap: 1.5rem;
-  align-items: flex-start;
-}
-
-.recipe-hero__img {
-  width: 200px;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.kv {
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-}
-
-.kv__pill {
-  padding: 0.35rem 0.75rem;
-  background: #ecf0f1;
-  border-radius: 12px;
-  font-size: 0.85rem;
-  color: #555;
-  font-weight: 500;
-}
-
-@media (max-width: 600px) {
-  .recipe-hero {
-    flex-direction: column;
-  }
-  
-  .recipe-hero__img {
-    width: 100%;
-    height: auto;
-  }
-}
+/* Recipe hero + kv styles live in main.css */
 
 /* Accessibility Improvements */
 .servings-btn:focus,
 .serving-suggestion-btn:focus,
 .reset-servings-btn:focus {
-  outline: 2px solid #2196F3;
+  outline: 2px solid var(--brand-2);
   outline-offset: 2px;
-}
-
-/* Dark Mode Support (optional) */
-@media (prefers-color-scheme: dark) {
-  .scaler-header h3 {
-    color: #ecf0f1;
-  }
-  
-  .ingredient-item {
-    background: #34495e;
-    border-left-color: #4CAF50;
-  }
-  
-  .ingredient-item.scaled {
-    background: #2c3e50;
-  }
-  
-  .ingredient-quantity,
-  .ingredient-name {
-    color: #ecf0f1;
-  }
-  
-  .original-quantity {
-    color: #95a5a6;
-  }
-  
-  .servings-input-group {
-    background: #2c3e50;
-    border-color: #555;
-  }
-  
-  .servings-input {
-    background: #34495e;
-    color: #ecf0f1;
-  }
 }

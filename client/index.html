@@ -4,15 +4,47 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="CulinAIry — a recipe manager SPA with authentication and CRUD recipes." />
+  <meta name="theme-color" content="#0b1020" />
   <title>CulinAIry - Recipe Manager</title>
   <link rel="stylesheet" href="css/main.css" />
   <link rel="stylesheet" href="css/recipe.css" />
 </head>
 
 <body>
-  <div id="navbar-container"></div>
+  <div class="app-shell">
+    <div class="culinary-motif" aria-hidden="true">
+      <svg class="motif motif--tl" viewBox="0 0 200 200" role="presentation">
+        <g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M70 92c-20 0-36-14-36-31 0-14 10-26 24-30 3-16 18-28 36-28 14 0 27 7 33 18 3-1 7-2 11-2 17 0 31 13 31 29 0 16-14 29-31 29H70z"/>
+          <path d="M52 92v40c0 10 8 18 18 18h60c10 0 18-8 18-18V92"/>
+          <path d="M124 134v18"/>
+          <path d="M100 134v18"/>
+          <path d="M76 134v18"/>
+        </g>
+      </svg>
 
-  <main id="app-container"></main>
+      <svg class="motif motif--br" viewBox="0 0 200 200" role="presentation">
+        <g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M52 44v54c0 16 10 24 24 24v44"/>
+          <path d="M52 44v18"/>
+          <path d="M64 44v18"/>
+          <path d="M76 44v18"/>
+          <path d="M124 42c-18 14-24 30-24 48 0 16 10 24 24 24v52"/>
+          <path d="M112 88h24"/>
+        </g>
+      </svg>
+    </div>
+
+    <div id="navbar-container"></div>
+    <main id="app-container"></main>
+
+    <noscript>
+      <div class="container" style="padding: 24px 0;">
+        <div class="error">This app requires JavaScript enabled to run.</div>
+      </div>
+    </noscript>
+  </div>
 
   <script type="module" src="js/app.js"></script>
 </body>

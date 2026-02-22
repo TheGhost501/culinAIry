@@ -42,6 +42,44 @@ body {
     var(--bg);
 }
 
+.app-shell {
+  min-height: 100%;
+  position: relative;
+  isolation: isolate;
+}
+
+.culinary-motif {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.08;
+}
+
+.culinary-motif .motif {
+  position: absolute;
+  width: 520px;
+  height: 520px;
+}
+
+.culinary-motif .motif--tl {
+  top: -180px;
+  left: -160px;
+  color: var(--brand);
+}
+
+.culinary-motif .motif--br {
+  bottom: -220px;
+  right: -200px;
+  color: var(--brand-2);
+}
+
+#navbar-container,
+#app-container {
+  position: relative;
+  z-index: 1;
+}
+
 .container {
   max-width: 1000px;
   padding: 0 var(--space-4);
