@@ -1,5 +1,4 @@
 import { api } from '../api.js';
-import { isAuthenticated } from '../auth.js';
 
 function escapeHtml(value) {
   return String(value ?? '')
@@ -31,51 +30,30 @@ function recipeCard(recipe) {
           <span class="kv__pill">Ingredients: ${ingredientsCount}</span>
         </div>
         <div class="card__actions">
-          <a class="button button--primary" href="#/recipes/${encodeURIComponent(recipe.id)}">View Recipe</a>
+          <a class="button button--primary" href="#/recipes/${encodeURIComponent(recipe.id)}">View</a>
+          <a class="button" href="#/edit-recipe/${encodeURIComponent(recipe.id)}">Edit</a>
+          <button class="button button--danger" data-action="delete-recipe" data-id="${escapeHtml(recipe.id)}">Delete</button>
         </div>
       </div>
     </article>
   `;
 }
 
-export async function recipesView() {
-  const auth = isAuthenticated();
-
+export async function myRecipesView() {
   try {
-    const response = await api.recipes.getAll();
+    const response = await api.recipes.getMyRecipes();
     const recipes = response?.data || [];
-
-    if (response?.error && recipes.length === 0) {
-      return `
-        <div class="container">
-          <section class="grid">
-            <article class="card">
-              <div class="card__body">
-                <h1 class="card__title">Recipes</h1>
-                <div class="error">${escapeHtml(response.error)}</div>
-                <div class="card__actions">
-                  <a class="button button--primary" href="#/recipes">Retry</a>
-                  ${auth ? '<a class="button" href="#/create-recipe">Create Recipe</a>' : '<a class="button" href="#/login">Login</a>'}
-                </div>
-              </div>
-            </article>
-          </section>
-        </div>
-      `;
-    }
 
     return `
       <div class="container">
         <section class="grid">
           <article class="card">
             <div class="card__body">
-              <h1 class="card__title">All Recipes</h1>
-              <p class="card__muted">Browse all recipes from the community.</p>
+              <h1 class="card__title">My Recipes</h1>
+              <p class="card__muted">Recipes you've created.</p>
               <div class="card__actions">
-                ${auth
-                  ? '<a class="button button--primary" href="#/create-recipe">Create New Recipe</a>'
-                  : '<a class="button button--primary" href="#/login">Login to create recipes</a>'
-                }
+                <a class="button button--primary" href="#/create-recipe">Create New Recipe</a>
+                <a class="button" href="#/recipes">Browse All Recipes</a>
               </div>
             </div>
           </article>
@@ -83,7 +61,7 @@ export async function recipesView() {
           ${recipes.length ? recipes.map(recipeCard).join('') : `
             <article class="card">
               <div class="card__body">
-                <p class="card__muted">No recipes yet. ${auth ? 'Be the first to create one!' : 'Login to create recipes.'}</p>
+                <p class="card__muted">You haven't created any recipes yet.</p>
               </div>
             </article>
           `}
@@ -99,7 +77,7 @@ export async function recipesView() {
               <h1 class="card__title">Error</h1>
               <div class="error">${escapeHtml(error.message)}</div>
               <div class="card__actions">
-                <a class="button button--primary" href="#/">Go Home</a>
+                <a class="button button--primary" href="#/recipes">Back to Recipes</a>
               </div>
             </div>
           </article>
@@ -108,3 +86,24 @@ export async function recipesView() {
     `;
   }
 }
+
+// Handle delete action via event delegation
+window.addEventListener('click', async (event) => {
+  const target = event.target;
+  if (!(target instanceof HTMLElement)) return;
+
+  const btn = target.closest('[data-action="delete-recipe"]');
+  if (!(btn instanceof HTMLElement)) return;
+
+  const recipeId = btn.getAttribute('data-id');
+  if (!recipeId) return;
+
+  if (!confirm('Delete this recipe?')) return;
+
+  try {
+    await api.recipes.delete(recipeId);
+    window.location.hash = '#/my-recipes';
+  } catch (error) {
+    alert(`Failed to delete: ${error.message}`);
+  }
+});

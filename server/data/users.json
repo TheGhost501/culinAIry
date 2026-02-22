@@ -6,6 +6,13 @@
       "username": "Gordon Ramsay",
       "password": "gordon#1",
       "createdAt": "2026-02-02T00:00:00.000Z"
+    },
+    {
+      "id": "1341f2d7-a646-498e-84cf-5cf2f5a47e4e",
+      "email": "nigelng@hotmail.com",
+      "username": "Uncle Roger",
+      "password": "rogerRoger",
+      "createdAt": "2026-02-22T12:05:34.019Z"
     }
   ],
   "sessions": []

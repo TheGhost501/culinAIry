@@ -6,11 +6,31 @@
       "description": "A cheeky, over-the-top sandwich with crispy bread, melted cheese, and a punchy sauce.",
       "servings": 1,
       "ingredients": [
-        { "name": "sourdough bread", "quantity": 2, "unit": "slices" },
-        { "name": "cheddar cheese", "quantity": 2, "unit": "slices" },
-        { "name": "butter", "quantity": 1, "unit": "tbsp" },
-        { "name": "hot sauce", "quantity": 1, "unit": "tsp" },
-        { "name": "mayonnaise", "quantity": 1, "unit": "tbsp" }
+        {
+          "name": "sourdough bread",
+          "quantity": 2,
+          "unit": "slices"
+        },
+        {
+          "name": "cheddar cheese",
+          "quantity": 2,
+          "unit": "slices"
+        },
+        {
+          "name": "butter",
+          "quantity": 1,
+          "unit": "tbsp"
+        },
+        {
+          "name": "hot sauce",
+          "quantity": 1,
+          "unit": "tsp"
+        },
+        {
+          "name": "mayonnaise",
+          "quantity": 1,
+          "unit": "tbsp"
+        }
       ],
       "instructions": [
         "Butter one side of each bread slice.",
@@ -31,12 +51,36 @@
       "description": "A British-leaning twist on carbonara with smoky bacon, peas, and a creamy egg sauce.",
       "servings": 2,
       "ingredients": [
-        { "name": "spaghetti", "quantity": 200, "unit": "g" },
-        { "name": "smoked bacon", "quantity": 150, "unit": "g" },
-        { "name": "eggs", "quantity": 2, "unit": "whole" },
-        { "name": "parmesan", "quantity": 40, "unit": "g" },
-        { "name": "peas", "quantity": 80, "unit": "g" },
-        { "name": "black pepper", "quantity": 1, "unit": "tsp" }
+        {
+          "name": "spaghetti",
+          "quantity": 200,
+          "unit": "g"
+        },
+        {
+          "name": "smoked bacon",
+          "quantity": 150,
+          "unit": "g"
+        },
+        {
+          "name": "eggs",
+          "quantity": 2,
+          "unit": "whole"
+        },
+        {
+          "name": "parmesan",
+          "quantity": 40,
+          "unit": "g"
+        },
+        {
+          "name": "peas",
+          "quantity": 80,
+          "unit": "g"
+        },
+        {
+          "name": "black pepper",
+          "quantity": 1,
+          "unit": "tsp"
+        }
       ],
       "instructions": [
         "Cook spaghetti until al dente, reserving a splash of pasta water.",
@@ -45,12 +89,149 @@
         "Toss pasta with bacon, remove from heat, then stir in egg mixture and a splash of pasta water.",
         "Serve immediately with extra parmesan and pepper."
       ],
-      "imageUrl": "https://images.unsplash.com/photo-1521389508051-d7ffb5dc8e8f",
+      "imageUrl": "https://images.unsplash.com/photo-1612874742237-6526221588e3",
       "cookTime": 15,
       "prepTime": 10,
       "ownerId": "5f3b4d3f-2b7d-4a3e-9a0d-6dfc6f4e2a11",
       "createdAt": "2026-02-02T00:00:00.000Z",
       "updatedAt": "2026-02-02T00:00:00.000Z"
+    },
+    {
+      "id": "f13aab4b-4276-4dc7-82e8-b16899592888",
+      "title": "Classic Chocolate Chip Cookies",
+      "description": "Soft, chewy chocolate chip cookies with crispy edges and gooey centers. Perfect for any occasion, these cookies are a timeless favorite that's easy to make and even easier to enjoy.",
+      "servings": 24,
+      "ingredients": [
+        {
+          "name": "all-purpose flour",
+          "quantity": 2.25,
+          "unit": "cups"
+        },
+        {
+          "name": "baking soda",
+          "quantity": 1,
+          "unit": "tsp"
+        },
+        {
+          "name": "salt",
+          "quantity": 1,
+          "unit": "tsp"
+        },
+        {
+          "name": "butter",
+          "quantity": 1,
+          "unit": "cup"
+        },
+        {
+          "name": "granulated sugar",
+          "quantity": 0.75,
+          "unit": "cup"
+        },
+        {
+          "name": "brown sugar",
+          "quantity": 0.75,
+          "unit": "cup"
+        },
+        {
+          "name": "vanilla extract",
+          "quantity": 2,
+          "unit": "tsp"
+        },
+        {
+          "name": "eggs",
+          "quantity": 2,
+          "unit": ""
+        },
+        {
+          "name": "chocolate chips",
+          "quantity": 2,
+          "unit": "cups"
+        }
+      ],
+      "instructions": [
+        "Preheat your oven to 375°F (190°C).",
+        "In a medium bowl, whisk together the flour, baking soda, and salt. Set aside.",
+        "In a large bowl, beat the softened butter with both sugars until light and fluffy, about 3-4 minutes.",
+        "Add the vanilla extract and eggs one at a time, mixing well after each addition.",
+        "Gradually fold in the flour mixture until just combined. Don't overmix.",
+        "Stir in the chocolate chips until evenly distributed.",
+        "Drop rounded tablespoons of dough onto ungreased baking sheets, spacing them 2 inches apart.",
+        "Bake for 9-11 minutes, or until the edges are golden brown but centers still look slightly underdone.",
+        "Let cookies cool on the baking sheet for 5 minutes before transferring to a wire rack.",
+        "Store in an airtight container for up to 5 days. Enjoy!"
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1499636136210-6f4ee915583e",
+      "cookTime": 0,
+      "prepTime": 0,
+      "ownerId": "5f3b4d3f-2b7d-4a3e-9a0d-6dfc6f4e2a11",
+      "createdAt": "2026-02-22T12:00:24.401Z",
+      "updatedAt": "2026-02-22T12:00:24.401Z"
+    },
+    {
+      "id": "fe60403d-f881-4c6b-ae48-8087116d60e3",
+      "title": "Authentic Chinese Egg Fried Rice",
+      "description": "A classic Chinese dish with fluffy grains of rice, scrambled eggs, and aromatic spring onions. The secret is using day-old rice and high heat for that perfect wok flavor. Simple, satisfying, and ready in minutes.",
+      "servings": 2,
+      "ingredients": [
+        {
+          "name": "cooked jasmine rice",
+          "quantity": 400,
+          "unit": "g"
+        },
+        {
+          "name": "eggs",
+          "quantity": 2,
+          "unit": ""
+        },
+        {
+          "name": "spring onions",
+          "quantity": 30,
+          "unit": "g"
+        },
+        {
+          "name": "vegetable oil",
+          "quantity": 30,
+          "unit": "ml"
+        },
+        {
+          "name": "soy sauce",
+          "quantity": 15,
+          "unit": "ml"
+        },
+        {
+          "name": "sesame oil",
+          "quantity": 5,
+          "unit": "ml"
+        },
+        {
+          "name": "white pepper",
+          "quantity": 1,
+          "unit": "g"
+        },
+        {
+          "name": "salt",
+          "quantity": 2,
+          "unit": "g"
+        }
+      ],
+      "instructions": [
+        "Use day-old refrigerated rice for best results. If using fresh rice, spread it on a tray and refrigerate for 1 hour to dry out.",
+        "Beat the eggs in a small bowl with a pinch of salt and white pepper.",
+        "Finely slice the spring onions, separating white and green parts.",
+        "Heat a wok or large frying pan over high heat until smoking hot. Add 20g of the vegetable oil.",
+        "Pour in the beaten eggs and scramble quickly until just set but still slightly wet. Remove and set aside.",
+        "Add remaining oil to the wok. Add white parts of spring onions and stir-fry for 30 seconds.",
+        "Add the cold rice, breaking up any clumps. Stir-fry for 3-4 minutes, tossing constantly to heat through and lightly char.",
+        "Return the scrambled eggs to the wok, breaking them into smaller pieces with your spatula.",
+        "Add soy sauce around the edge of the wok, then toss everything together for 1 minute.",
+        "Add green parts of spring onions and sesame oil. Toss for 30 seconds. Season with white pepper and serve immediately."
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1603133872878-684f208fb84b",
+      "cookTime": 0,
+      "prepTime": 0,
+      "ownerId": "1341f2d7-a646-498e-84cf-5cf2f5a47e4e",
+      "createdAt": "2026-02-22T12:08:33.700Z",
+      "updatedAt": "2026-02-22T12:08:33.700Z"
     }
   ]
 }

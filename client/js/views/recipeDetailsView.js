@@ -1,5 +1,5 @@
-import { store } from '../state/store.js';
 import { api } from '../api.js';
+import { getUserId } from '../auth.js';
 import { ingredientScalerComponent, attachScalerListeners } from '../components/ingredientScaler.js';
 
 function escapeHtml(value) {
@@ -12,12 +12,12 @@ function escapeHtml(value) {
 }
 
 export async function recipeDetailsView({ params }) {
-  const { recipes, auth } = store.getState();
+  const userId = getUserId();
   const id = params?.id;
 
   // Try to fetch from backend first
   const { data: backendRecipe, error } = await api.recipes.getById(id);
-  const recipe = backendRecipe || recipes.find((r) => r.id === id);
+  const recipe = backendRecipe;
 
   if (!recipe) {
     return `
@@ -38,11 +38,11 @@ export async function recipeDetailsView({ params }) {
 
   const title = escapeHtml(recipe.title);
   const description = escapeHtml(recipe.description);
-  const image = recipe.imageUrl ? escapeHtml(recipe.imageUrl) : '';
+  const image = recipe.image ? escapeHtml(recipe.image) : (recipe.imageUrl ? escapeHtml(recipe.imageUrl) : '');
 
   const ingredients = Array.isArray(recipe.ingredients) ? recipe.ingredients : [];
   const instructions = Array.isArray(recipe.instructions) ? recipe.instructions : [];
-  const isOwner = auth && auth.userId === recipe.ownerId;
+  const isOwner = userId && userId === recipe.userId;
 
   // Attach scaler listeners after DOM updates
   setTimeout(() => {

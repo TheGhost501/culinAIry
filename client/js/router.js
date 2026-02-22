@@ -7,6 +7,7 @@ import { recipeDetailsView } from './views/recipeDetailsView.js';
 import { createRecipeView } from './views/createRecipeView.js';
 import { editRecipeView } from './views/editRecipeView.js';
 import { myRecipesView } from './views/myRecipesView.js';
+import { notFoundView } from './views/notFoundView.js';
 
 // Route mapping object
 const routes = {
@@ -86,7 +87,8 @@ export async function handleRoute() {
   }
 
   if (!view) {
-    appContainer.innerHTML = '<p>Page not found</p>';
+    const html = await notFoundView({ path });
+    appContainer.innerHTML = html;
     return;
   }
 
