@@ -12,11 +12,16 @@ node server.js
 
 ### Step 2: Start Frontend
 ```bash
-# Option A: VS Code Live Server Extension
+# Option A: VS Code Live Server Extension (RECOMMENDED)
 # Right-click client/index.html → "Open with Live Server"
+# ✅ Frontend running on http://localhost:5500
 
-# Option B: Terminal
-npx http-server client -p 5500
+# Option B: Python (if installed)
+cd client
+python -m http.server 5500
+
+# Option C: Node.js serve package
+npx serve client -p 5500
 ```
 
 ### Step 3: Open Browser
@@ -55,12 +60,13 @@ DELETE /api/recipes/:id        → Delete recipe (protected)
 client/
 ├── js/
 │   ├── api.js                 ← ⭐ API Service (all HTTP calls)
-│   ├── auth.js                ← Token management
+│   ├── auth.js                ← Token management & state
 │   ├── app.js                 ← Event handling
 │   ├── router.js              ← Hash routing
-│   ├── state/store.js         ← State management
-│   ├── views/                 ← Page components
-│   └── components/            ← Reusable UI
+│   ├── views/                 ← Page components (9 views)
+│   ├── components/            ← Reusable UI
+│   ├── utils/                 ← Helper functions
+│   └── legacy-frontend/       ← ⚠️ Archived code
 └── css/
     └── main.css               ← Styles
 ```
@@ -73,13 +79,15 @@ client/
 ```
 User Input (email, username, password)
     ↓
-store.actions.register()
+View calls api.auth.register()
     ↓
-api.auth.register() → POST /api/auth/register
+POST /api/auth/register
     ↓
 Backend creates user, generates token
     ↓
 Frontend: saveToken() → localStorage
+    ↓
+Dispatch authChange event
     ↓
 X-Authorization header added to all requests
 ```
@@ -114,17 +122,16 @@ headers: {
 All API calls follow this pattern:
 
 ```javascript
-// Call
+// Call API directly from view
 const { data, error } = await api.recipes.create(recipeData);
 
-// Handle
+// Handle error in view
 if (error) {
-  store.actions.setError(error);
-  return;
+  return `<div class="error">${error}</div>`;
 }
 
-// Use
-store.actions.setNotice('Recipe created!');
+// Use data in view
+return `<div class="success">Recipe created!</div>`;
 ```
 
 ---
@@ -134,10 +141,11 @@ store.actions.setNotice('Recipe created!');
 | File | Changes | Purpose |
 |------|---------|---------|
 | `api.js` | ✅ Complete rewrite | Centralized HTTP client |
-| `store.js` | ✅ Backend integration | Auth + CRUD operations |
-| `app.js` | ✅ Async handling | Form submission |
-| `*View.js` | ✅ API calls | Fetch from backend |
-| `main.css` | ✅ Loading states | Animations + styling |
+| `auth.js` | ✅ Token management | Authentication utilities |
+| `app.js` | ✅ Event handling | Router initialization |
+| `*View.js` | ✅ API integration | Direct API calls from views |
+| `router.js` | ✅ Protected routes | Auth-based route guards |
+| `main.css` | ✅ Dark theme | Culinary-style UI |
 
 ---
 
@@ -223,21 +231,26 @@ const token = getToken();  // ← localStorage
 clearToken();  // Remove from localStorage
 ```
 
-### 2. Store State
+### 2. Auth State (localStorage)
 ```javascript
-{
-  auth: { token, userId, email, username },
-  ui: { error, notice },
-  recipes: [ recipe1, recipe2, ... ]
-}
+// Token stored in localStorage
+localStorage.getItem('token');    // Session token
+localStorage.getItem('userId');   // Current user ID
+
+// Check authentication status
+isAuthenticated(); // returns boolean
+getUserId();       // returns userId or null
 ```
 
 ### 3. Views Are Functions
 ```javascript
-// All views are async functions
-export async function recipesListView() {
-  const { recipes } = store.getState();
-  const { data } = await api.recipes.getAll();
+// All views are async functions that call API directly
+export default async function recipesView() {
+  const { data: recipes, error } = await api.recipes.getAll();
+  
+  if (error) {
+    return `<div class="error">${error}</div>`;
+  }
   
   return `<html>...</html>`;
 }
@@ -274,26 +287,25 @@ window.location.hash = '#/login';
    - How headers are managed
    - How errors are handled
 
-2. **Understand State Management** (`client/js/state/store.js`)
-   - How state is structured
-   - How actions modify state
-   - How views subscribe to changes
+2. **Understand Authentication** (`client/js/auth.js`)
+   - How tokens are stored in localStorage
+   - How auth state is checked
+   - How authChange events work
 
 3. **Understand the Flow**
    - User interacts with view
-   - View calls store action
-   - Store action calls API
-   - API makes HTTP request
+   - View calls api.js directly
+   - API makes HTTP request with auth headers
    - Backend responds
-   - Store state updates
-   - Views re-render
+   - View updates DOM with response data
+   - Custom events trigger navbar updates
 
-4. **Understand Authentication**
-   - Registration/login get token
-   - Token stored in localStorage
-   - Token sent in X-Authorization header
-   - Backend validates token
-   - Protected routes only work with valid token
+4. **Understand Protected Routes**
+   - Router checks `isAuthenticated()` before rendering
+   - Unauthenticated users redirected to /login
+   - Routes like /create-recipe, /edit-recipe/:id, /my-recipes are protected
+   - X-Authorization header automatically added by api.js
+   - Backend validates token on protected endpoints
 
 ---
 
@@ -386,7 +398,7 @@ If something doesn't work:
 - ✅ HTTP headers (Content-Type, X-Authorization)
 - ✅ Request/response handling
 - ✅ Error handling patterns
-- ✅ State management
+- ✅ Direct API-to-view architecture
 - ✅ SPA architecture
 
 ---

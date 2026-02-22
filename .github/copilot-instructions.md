@@ -25,11 +25,15 @@
 npm install
 node server.js  # Runs on port 3000
 
-# Frontend (option 1 - VS Code Live Server)
+# Frontend (option 1 - VS Code Live Server, recommended)
 # Use Live Server extension on client/index.html - runs on port 5500
 
-# Frontend (option 2 - http-server npm package)
-npx http-server client -p 5500
+# Frontend (option 2 - Python http.server)
+cd client
+python -m http.server 5500
+
+# Frontend (option 3 - Node.js serve)
+npx serve client -p 5500
 ```
 
 ### Testing
